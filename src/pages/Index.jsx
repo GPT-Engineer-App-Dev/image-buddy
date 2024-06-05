@@ -1,7 +1,29 @@
-import { Box, Container, Flex, HStack, VStack, Text, Input, IconButton, Avatar, Image, Spacer, Divider, Link } from "@chakra-ui/react";
-import { FaSearch, FaHeart, FaComment, FaShare, FaBell, FaEnvelope } from "react-icons/fa";
+import { useState } from "react";
+import { Box, Container, Flex, HStack, VStack, Text, Input, IconButton, Avatar, Image, Spacer, Divider, Link, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button } from "@chakra-ui/react";
+import { FaSearch, FaHeart, FaComment, FaShare, FaBell, FaEnvelope, FaUpload } from "react-icons/fa";
 
 const Index = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedPhoto(null);
+  };
+
+  const handlePhotoChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      setSelectedPhoto(URL.createObjectURL(event.target.files[0]));
+    }
+  };
+
+  const handleUpload = () => {
+    // Placeholder function to simulate upload
+    console.log("Uploading photo...");
+    closeModal();
+  };
+
   return (
     <Container maxW="container.xl">
       {/* Navigation Bar */}
@@ -11,6 +33,7 @@ const Index = () => {
         <HStack spacing={4}>
           <Input placeholder="Search" bg="gray.700" border="none" color="white" />
           <IconButton aria-label="Search" icon={<FaSearch />} />
+          <IconButton aria-label="Upload" icon={<FaUpload />} onClick={openModal} />
           <IconButton aria-label="Notifications" icon={<FaBell />} />
           <IconButton aria-label="Messages" icon={<FaEnvelope />} />
           <Avatar name="User" src="https://bit.ly/broken-link" />
@@ -69,6 +92,23 @@ const Index = () => {
           <Link href="#">Privacy</Link>
         </Flex>
       </Box>
+
+      {/* Upload Photo Modal */}
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Upload Photo</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Input type="file" accept="image/*" onChange={handlePhotoChange} />
+            {selectedPhoto && <Image src={selectedPhoto} alt="Selected Photo" mt={4} />}
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={handleUpload}>Upload</Button>
+            <Button variant="ghost" onClick={closeModal}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Container>
   );
 };
