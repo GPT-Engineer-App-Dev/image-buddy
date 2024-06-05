@@ -5,6 +5,7 @@ import { FaSearch, FaHeart, FaComment, FaShare, FaBell, FaEnvelope, FaUpload } f
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [isLiked, setIsLiked] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
@@ -22,6 +23,10 @@ const Index = () => {
     // Placeholder function to simulate upload
     console.log("Uploading photo...");
     closeModal();
+  };
+
+  const handleLikeClick = () => {
+    setIsLiked(!isLiked);
   };
 
   return (
@@ -52,7 +57,13 @@ const Index = () => {
               </Flex>
               <Image src="https://via.placeholder.com/600" alt="Post Image" />
               <Flex p={4} align="center">
-                <IconButton aria-label="Like" icon={<FaHeart />} />
+                <IconButton
+                  aria-label="Like"
+                  icon={<FaHeart />}
+                  onClick={handleLikeClick}
+                  color={isLiked ? "red.500" : "gray.500"}
+                />
+                <Text ml={2}>{isLiked ? 101 : 100}</Text>
                 <IconButton aria-label="Comment" icon={<FaComment />} ml={2} />
                 <IconButton aria-label="Share" icon={<FaShare />} ml={2} />
               </Flex>
